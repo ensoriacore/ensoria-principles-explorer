@@ -1,0 +1,1059 @@
+/* Ensoria Official Branding Tokens */
+:root {
+  --ensoria-void:          #090d16;
+  --ensoria-void-surface:  #050811;
+  --ensoria-hull:          #131b2e;
+  --ensoria-hull-elevated: #1a243d;
+  --ensoria-border:        #1e293b;
+  --ensoria-border-focus:  #334155;
+
+  --ensoria-cyan:          #38bdf8; /* Brain / Cognition */
+  --ensoria-emerald:       #34d399; /* Body / Root Chakra */
+  --ensoria-amber:         #fbbf24; /* Flight / Caution */
+  --ensoria-amethyst:      #c084fc; /* Soul / Heart */
+  --ensoria-rose:          #f43f5e; /* Flawed / Warning */
+
+  --ensoria-text-primary:   #f8fafc;
+  --ensoria-text-secondary: #94a3b8;
+  --ensoria-text-dim:       #64748b;
+
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Menlo', monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--ensoria-void);
+  color: var(--ensoria-text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  touch-action: none;
+}
+
+/* Cosmic Background Glow & Grid */
+.ambient-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 50% 25%, rgba(56, 189, 248, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(192, 132, 252, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 50% 75%, rgba(52, 211, 153, 0.08) 0%, transparent 60%);
+}
+
+/* UI Overlay Layer */
+.ui-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Interactive elements inside UI Overlay */
+.interactive {
+  pointer-events: auto;
+}
+
+/* Header */
+header.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  background: linear-gradient(180deg, rgba(9, 13, 22, 0.85) 0%, rgba(9, 13, 22, 0) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.enso-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: var(--ensoria-cyan);
+  border-right-color: var(--ensoria-amethyst);
+  border-bottom-color: var(--ensoria-emerald);
+  animation: enso-rotate 12s linear infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.3);
+}
+
+.enso-dot {
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #fff;
+}
+
+@keyframes enso-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.brand-title h1 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #fff 0%, var(--ensoria-text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-title p {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: var(--ensoria-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Language Selector */
+.lang-selector {
+  display: flex;
+  align-items: center;
+  background: rgba(19, 27, 46, 0.75);
+  border: 1px solid var(--ensoria-border);
+  border-radius: 20px;
+  padding: 2px;
+  gap: 2px;
+  backdrop-filter: blur(8px);
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: var(--ensoria-text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lang-btn.active {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.3) 0%, rgba(192, 132, 252, 0.3) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.25);
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-box input {
+  background: rgba(19, 27, 46, 0.7);
+  border: 1px solid var(--ensoria-border);
+  color: var(--ensoria-text-primary);
+  padding: 6px 12px 6px 32px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  width: 170px;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.search-box input:focus {
+  outline: none;
+  width: 220px;
+  border-color: var(--ensoria-cyan);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 0.85rem;
+  color: var(--ensoria-text-dim);
+  pointer-events: none;
+}
+
+.btn-icon {
+  background: rgba(19, 27, 46, 0.7);
+  border: 1px solid var(--ensoria-border);
+  color: var(--ensoria-text-secondary);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  backdrop-filter: blur(8px);
+}
+
+.btn-icon:hover, .btn-icon:active {
+  color: #fff;
+  border-color: var(--ensoria-border-focus);
+  background: var(--ensoria-hull-elevated);
+}
+
+/* Center HUD / Somatic Selector */
+.center-selector-bar {
+  align-self: center;
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: rgba(19, 27, 46, 0.85);
+  border: 1px solid var(--ensoria-border);
+  border-radius: 30px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  margin-top: 6px;
+}
+
+.center-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--ensoria-text-secondary);
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.center-btn .badge-count {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.center-btn.active, .center-btn:hover {
+  color: #fff;
+}
+
+.center-btn[data-center="brain"].active {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: var(--ensoria-cyan);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+  color: var(--ensoria-cyan);
+}
+
+.center-btn[data-center="soul"].active {
+  background: rgba(192, 132, 252, 0.15);
+  border-color: var(--ensoria-amethyst);
+  box-shadow: 0 0 16px rgba(192, 132, 252, 0.3);
+  color: var(--ensoria-amethyst);
+}
+
+.center-btn[data-center="body"].active {
+  background: rgba(52, 211, 153, 0.15);
+  border-color: var(--ensoria-emerald);
+  box-shadow: 0 0 16px rgba(52, 211, 153, 0.3);
+  color: var(--ensoria-emerald);
+}
+
+.center-btn[data-center="all"].active {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--ensoria-text-secondary);
+  color: #fff;
+}
+
+/* Floating HUD Card (Active Center Context) */
+.active-center-card {
+  position: absolute;
+  top: 75px;
+  left: 20px;
+  max-width: 320px;
+  background: rgba(19, 27, 46, 0.85);
+  border: 1px solid var(--ensoria-border);
+  border-left: 3px solid var(--ensoria-cyan);
+  border-radius: 12px;
+  padding: 14px 16px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  pointer-events: auto;
+}
+
+.active-center-card.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+.center-meta-tag {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.center-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.center-slogan {
+  font-size: 0.78rem;
+  color: var(--ensoria-text-secondary);
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+.center-quote {
+  font-size: 0.74rem;
+  font-style: italic;
+  color: #e2e8f0;
+  line-height: 1.38;
+  margin: 6px 0 10px 0;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0 6px 6px 0;
+}
+
+.center-stats {
+  display: flex;
+  gap: 12px;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--ensoria-text-dim);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 8px;
+}
+
+.center-stats span b {
+  color: var(--ensoria-text-primary);
+}
+
+/* Bottom Hint & Controls */
+.bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 16px 20px;
+  background: linear-gradient(0deg, rgba(9, 13, 22, 0.9) 0%, rgba(9, 13, 22, 0) 100%);
+}
+
+.interaction-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--ensoria-text-secondary);
+  background: rgba(19, 27, 46, 0.6);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+}
+
+.hint-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ensoria-cyan);
+  animation: pulse-hint 2s infinite;
+}
+
+@keyframes pulse-hint {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+.view-controls {
+  display: flex;
+  gap: 8px;
+}
+
+/* Floating 3D Node Labels */
+.node-label-anchor {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 5;
+  transition: transform 0.15s ease;
+}
+
+.node-label-anchor:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.node-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 16px;
+  background: rgba(19, 27, 46, 0.85);
+  border: 1px solid var(--ensoria-border);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--ensoria-text-primary);
+  transition: all 0.2s ease;
+}
+
+.node-pill:hover {
+  border-color: #fff;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.3);
+}
+
+.node-pill.type-core {
+  border-color: var(--ensoria-amethyst);
+}
+.node-pill.type-operative {
+  border-color: var(--ensoria-cyan);
+}
+.node-pill.type-guiding {
+  border-color: var(--ensoria-emerald);
+}
+
+.node-type-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* Principle Detail Modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(5, 8, 17, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  background: var(--ensoria-hull);
+  border: 1px solid var(--ensoria-border);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-backdrop.open .modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--ensoria-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: var(--ensoria-hull-elevated);
+}
+
+.modal-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.modal-badge {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.06em;
+}
+
+.modal-badge.badge-soul {
+  background: rgba(192, 132, 252, 0.15);
+  color: var(--ensoria-amethyst);
+  border: 1px solid rgba(192, 132, 252, 0.3);
+}
+
+.modal-badge.badge-brain {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--ensoria-cyan);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.modal-badge.badge-body {
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--ensoria-emerald);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.modal-badge.badge-type {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ensoria-text-secondary);
+  border: 1px solid var(--ensoria-border);
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.modal-tag-slug {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--ensoria-text-dim);
+  margin-top: 4px;
+}
+
+.btn-close {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--ensoria-border);
+  color: var(--ensoria-text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-close:hover {
+  background: rgba(244, 63, 94, 0.2);
+  color: #fff;
+  border-color: var(--ensoria-rose);
+}
+
+.modal-body {
+  padding: 22px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Custom scrollbar */
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-body::-webkit-scrollbar-thumb {
+  background: var(--ensoria-border);
+  border-radius: 3px;
+}
+
+/* Axiom Card */
+.axiom-card {
+  background: rgba(26, 36, 61, 0.7);
+  border: 1px solid var(--ensoria-border-focus);
+  border-left: 4px solid var(--ensoria-cyan);
+  border-radius: 10px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.axiom-label {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ensoria-cyan);
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.axiom-quote {
+  font-size: 1.02rem;
+  font-weight: 500;
+  color: #fff;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Section Headings */
+.section-title {
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ensoria-text-secondary);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.description-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ensoria-text-primary);
+  white-space: pre-line;
+}
+
+/* Behaviors & Comportamenti */
+.behavior-block {
+  background: rgba(19, 27, 46, 0.6);
+  border: 1px solid var(--ensoria-border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.behavior-header {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.behavior-rule {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--ensoria-text-secondary);
+  margin-bottom: 14px;
+}
+
+/* Examples Comparison Grid */
+.example-item {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.example-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ensoria-text-primary);
+  margin-bottom: 8px;
+}
+
+.contrast-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.contrast-box {
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.contrast-box.flawed {
+  background: rgba(244, 63, 94, 0.08);
+  border: 1px solid rgba(244, 63, 94, 0.25);
+  color: #fecdd3;
+}
+
+.contrast-box.ensoria {
+  background: rgba(52, 211, 153, 0.08);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  color: #d1fae5;
+}
+
+.contrast-label {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.contrast-box.flawed .contrast-label {
+  color: var(--ensoria-rose);
+}
+
+.contrast-box.ensoria .contrast-label {
+  color: var(--ensoria-emerald);
+}
+
+/* Search Dropdown / List View */
+.search-results-panel {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  width: 320px;
+  max-height: 400px;
+  background: rgba(19, 27, 46, 0.95);
+  border: 1px solid var(--ensoria-border-focus);
+  border-radius: 12px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(16px);
+  overflow-y: auto;
+  z-index: 50;
+  display: none;
+  flex-direction: column;
+}
+
+.search-results-panel.active {
+  display: flex;
+}
+
+.search-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.search-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.search-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.search-item-title {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.search-item-domain {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+}
+
+.search-item-axiom {
+  font-size: 0.74rem;
+  color: var(--ensoria-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Responsive Mobile Rules (Pixel, iPhone, etc.) */
+@media (max-width: 768px) {
+  header.app-header {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .brand-title h1 {
+    font-size: 0.95rem;
+  }
+
+  .search-box input {
+    width: 130px;
+    font-size: 0.78rem;
+  }
+
+  .search-box input:focus {
+    width: 170px;
+  }
+
+  .center-selector-bar {
+    width: calc(100% - 24px);
+    justify-content: space-around;
+    padding: 4px;
+  }
+
+  .center-btn {
+    padding: 6px 10px;
+    font-size: 0.76rem;
+    gap: 4px;
+  }
+
+  .active-center-card {
+    top: auto;
+    bottom: 75px;
+    left: 12px;
+    right: 12px;
+    max-width: none;
+    padding: 10px 12px;
+  }
+
+  .center-name {
+    font-size: 0.95rem;
+  }
+
+  .center-slogan {
+    font-size: 0.74rem;
+    margin-bottom: 6px;
+  }
+
+  .contrast-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-card {
+    max-height: 95vh;
+    border-radius: 12px;
+  }
+
+  .modal-header {
+    padding: 14px 16px;
+  }
+
+  .modal-body {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .modal-title {
+    font-size: 1.08rem;
+  }
+
+  .bottom-bar {
+    padding: 10px 14px;
+  }
+
+  .interaction-hint {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+  }
+
+  .viewport-toolbar {
+    right: 12px;
+    bottom: 140px;
+  }
+}
+
+/* 3D Viewport Navigation Toolbar */
+.viewport-toolbar {
+  position: absolute;
+  right: 24px;
+  bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid var(--ensoria-border);
+  padding: 8px 6px;
+  border-radius: 30px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  z-index: 40;
+}
+
+.vp-tool-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--ensoria-text-primary);
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vp-tool-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: var(--ensoria-cyan);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+  transform: scale(1.08);
+}
+
+.vp-tool-btn:active {
+  transform: scale(0.95);
+}
+
+.vp-tool-btn.mode-active {
+  background: rgba(56, 189, 248, 0.3);
+  border-color: var(--ensoria-cyan);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+}
+
+/* =======================================================================
+ * Somatic Center Interactive 3D Beacons (Direct Body CTAs)
+ * ======================================================================= */
+.somatic-beacon {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+  transition: opacity 0.25s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.somatic-beacon:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.somatic-beacon:active {
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+.beacon-radar {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.beacon-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 12px currentColor;
+  background: currentColor;
+  z-index: 2;
+}
+
+.beacon-wave {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  opacity: 0.85;
+  animation: beacon-ripple 1.8s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes beacon-ripple {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.beacon-label {
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #f8fafc;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.beacon-sub {
+  font-size: 0.66rem;
+  font-family: var(--font-mono);
+  color: var(--ensoria-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.somatic-beacon.active .beacon-sub {
+  color: #f87171;
+}
+
+.somatic-beacon.active .beacon-label {
+  border-color: rgba(248, 113, 113, 0.4);
+  background: rgba(20, 15, 25, 0.9);
+}
+

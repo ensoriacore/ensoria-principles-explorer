@@ -1,0 +1,25 @@
+{
+  "name": "ensoria-principles-explorer",
+  "version": "1.0.0",
+  "description": "3D Interactive Somatic Avatar and Nodal Principles Explorer for Ensoria Constellation Alpha",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/test_suite.js"
+  },
+  "keywords": [
+    "ensoria",
+    "principles",
+    "threejs",
+    "3d",
+    "somatic",
+    "avatar",
+    "graph"
+  ],
+  "author": "Deepseed S.L.U. / ensoriacore",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}

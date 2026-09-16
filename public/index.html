@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Ensoria Principles Explorer · 3D Somatic Avatar & Graph</title>
+  <meta name="description" content="Esploratore 3D interattivo dei principi ontologici ed etici di Ensoria basato sulla trinità Brain, Soul e Body.">
+  <meta name="theme-color" content="#090d16">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Ambient Cosmic Glow -->
+  <div class="ambient-glow"></div>
+
+  <!-- 3D Three.js Canvas Container -->
+  <div id="canvas-container"></div>
+
+  <!-- User Interface Overlay -->
+  <div class="ui-overlay">
+    <!-- Header -->
+    <header class="app-header interactive">
+      <div class="brand-badge">
+        <div class="enso-logo">
+          <div class="enso-dot"></div>
+        </div>
+        <div class="brand-title">
+          <h1>Ensoria Principles Explorer</h1>
+          <p>Somatic Avatar & Living Nodal Graph · OBJ-CORE-APP-003</p>
+        </div>
+      </div>
+
+      <!-- Somatic Center Quick Selector -->
+      <div class="center-selector-bar interactive">
+        <button class="center-btn" data-center="brain" title="Cognitive Engine & Epistemology">
+          <span>🧠</span> Brain <span class="badge-count">-</span>
+        </button>
+        <button class="center-btn active" data-center="soul" title="Ethical Core, Lineage & Dignity">
+          <span>💜</span> Soul <span class="badge-count">-</span>
+        </button>
+        <button class="center-btn" data-center="body" title="Physical Silicon, Zero-Trust & Healing">
+          <span>⚡</span> Body <span class="badge-count">-</span>
+        </button>
+        <button class="center-btn" data-center="all" title="Trinità Ontologica Vivente">
+          <span>✨</span> Trinity <span class="badge-count">-</span>
+        </button>
+      </div>
+
+      <!-- Header Right Actions: Search, Lang Switcher & Reset -->
+      <div class="header-actions">
+        <div class="lang-selector" title="Language / Lingua / Idioma">
+          <button class="lang-btn" data-lang="it">IT</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="es">ES</button>
+        </div>
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Cerca principi..." autocomplete="off" spellcheck="false">
+        </div>
+        <button id="btn-reset-view" class="btn-icon" title="Ripristina visuale 3D">
+          <span>🎯</span> <span data-i18n="resetView">Centra</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Floating HUD Card (Active Center Context) -->
+    <div id="active-center-card" class="active-center-card interactive">
+      <div class="center-meta-tag">
+        <span>💜</span> <span data-i18n="somaticCenterTag">CENTRO SOMATICO</span>
+      </div>
+      <div class="center-name">Soul / Cardiac Center</div>
+      <div class="center-slogan">Caricamento principi in corso...</div>
+      <div class="center-quote"></div>
+      <div class="center-stats">
+        <span><span data-i18n="principlesCount">Principi</span>: <b class="stat-count">-</b></span>
+        <span><span data-i18n="chakra">Chakra</span>: <b class="stat-chakra">-</b></span>
+      </div>
+    </div>
+
+    <!-- Search Results Live Dropdown -->
+    <div id="search-results" class="search-results-panel interactive"></div>
+
+    <!-- 3D Viewport Navigation Toolbar -->
+    <div class="viewport-toolbar interactive" aria-label="Controlli Vista 3D">
+      <button id="btn-zoom-in" class="vp-tool-btn" title="Zoom In (+)">
+        <span>➕</span>
+      </button>
+      <button id="btn-zoom-out" class="vp-tool-btn" title="Zoom Out (-)">
+        <span>➖</span>
+      </button>
+      <button id="btn-toggle-pan" class="vp-tool-btn" title="Alterna modalità tocco: Ruota ↔ Sposta">
+        <span id="pan-icon">🔄</span>
+      </button>
+      <button id="btn-recenter" class="vp-tool-btn" title="Centra Avatar (🎯)">
+        <span>🎯</span>
+      </button>
+    </div>
+
+    <!-- Bottom Bar & Interaction Hints -->
+    <footer class="bottom-bar">
+      <div class="interaction-hint interactive">
+        <div class="hint-dot"></div>
+        <span id="interaction-text">Trascina per ruotare · Tasto destro/2 dita per spostare · Scroll per zoomare</span>
+      </div>
+      <div class="view-controls interactive">
+        <div style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--ensoria-text-dim);">
+          60 FPS · Three.js r128 · Sovereign Substrate
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Detailed Principle Modal Component -->
+  <div id="principle-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <div class="modal-tags">
+            <span class="modal-badge badge-soul">SOUL</span>
+            <span class="modal-badge badge-type">CORE PRINCIPLE</span>
+          </div>
+          <div class="modal-title">Principle Title</div>
+          <div class="modal-tag-slug">ensoria core principle [slug]</div>
+        </div>
+        <button class="btn-close" aria-label="Chiudi finestra">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Dynamically injected content (Axiom, Behaviors, Examples) -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Three.js Local Bundle with Fallback -->
+  <script src="vendor/three.min.js"></script>
+  <script src="vendor/OrbitControls.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+      document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"><\/script>');
+    }
+  </script>
+
+  <!-- Application Logic -->
+  <script src="js/avatar3d.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
