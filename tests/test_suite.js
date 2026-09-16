@@ -181,6 +181,13 @@ async function runTestSuite() {
 
     const htmlRes = await makeRequest('/');
     assert(htmlRes.status === 200 && htmlRes.body.includes('Ensoria Principles Explorer'), 'GET / serves HTML index');
+    assert(htmlRes.body.includes('timeline_slider.js'), 'HTML includes timeline_slider.js');
+    assert(htmlRes.body.includes('timeline-container'), 'HTML contains #timeline-container');
+
+    // --- [Timeline Engine (OBJ-CORE-FEAT-002)] ---
+    const timelineRes = await makeRequest('/api/timeline');
+    assert(timelineRes.status === 200 && timelineRes.data.success === true, 'GET /api/timeline returns 200');
+    assert(Array.isArray(timelineRes.data.epochs) && timelineRes.data.totalEpochs >= 3, 'Timeline contains >= 3 historical epochs');
 
     server.close();
 
