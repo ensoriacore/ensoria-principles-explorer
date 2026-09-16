@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 const parser = require('./lib/parser');
@@ -139,6 +140,24 @@ apiRouter.get('/centers', (req, res) => {
             lang,
             totalCenters: centers.length,
             centers
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// Get temporal epochs timeline
+apiRouter.get('/timeline', (req, res) => {
+    try {
+        const timelinePath = path.join(__dirname, 'data', 'timeline.json');
+        if (!fs.existsSync(timelinePath)) {
+            return res.status(404).json({ success: false, error: 'timeline.json not found' });
+        }
+        const timeline = JSON.parse(fs.readFileSync(timelinePath, 'utf8'));
+        res.json({
+            success: true,
+            totalEpochs: timeline.length,
+            epochs: timeline
         });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
