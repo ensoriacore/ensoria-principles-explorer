@@ -355,7 +355,6 @@
       };
 
       updateActiveCard(allInfo);
-      openPrinciplesDrawer('all', principles, allInfo);
       return;
     }
 
@@ -371,14 +370,11 @@
         domainPrinciples = principles.filter(p => p.domain === centerId);
     }
 
-    // Update 3D Nodal Graph
+    // Update 3D Nodal Graph (Expand 3D Constellation Map)
     avatar3D.updateGraph(centerId, domainPrinciples);
 
     // Update Floating HUD Card
     updateActiveCard(center);
-
-    // OPEN THE PRINCIPLES DRAWER IMMEDIATELY
-    openPrinciplesDrawer(centerId, domainPrinciples, center);
   }
 
   function collapseCenter() {
@@ -517,9 +513,6 @@
       (p.type && p.type.toLowerCase().includes(q))
     );
     renderDrawerPrinciples(filtered);
-  }
-    }
-    updateActiveCard(null);
   }
 
   function updateActiveCard(center) {
