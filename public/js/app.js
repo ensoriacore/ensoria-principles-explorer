@@ -324,8 +324,17 @@
     const center = centers.find(c => c.id === centerId);
     if (!center) return;
 
+    // The API returns principles under domains
+    let domainPrinciples = [];
+    if (center.principles) {
+        domainPrinciples = center.principles;
+    } else {
+        // Fallback for flat principles matching
+        domainPrinciples = principles.filter(p => p.domain === centerId);
+    }
+
     // Update 3D Nodal Graph
-    avatar3D.updateGraph(centerId, center.principles);
+    avatar3D.updateGraph(centerId, domainPrinciples);
 
     // Update Floating HUD Card
     updateActiveCard(center);
