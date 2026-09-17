@@ -19,7 +19,9 @@
             }
 
             try {
-                const response = await fetch('/api/timeline');
+                let basePath = window.location.pathname;
+                if (!basePath.endsWith('/')) basePath += '/';
+                const response = await fetch(basePath + 'api/timeline');
                 const data = await response.json();
                 if (data.success && Array.isArray(data.epochs)) {
                     this.epochs = data.epochs;

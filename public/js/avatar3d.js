@@ -981,6 +981,25 @@ class EnsoriaAvatar3D {
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   }
+  filterByEpoch(epochPrinciples) {
+    if (!this.principleNodes || this.principleNodes.length === 0) return;
+
+    this.principleNodes.forEach(node => {
+      if (epochPrinciples === 'all' || epochPrinciples.includes(node.id)) {
+        // Show node and label
+        node.mesh.visible = true;
+        node.hitMesh.visible = true;
+        node.line.visible = true;
+        if (node.labelEl) node.labelEl.style.opacity = '1';
+      } else {
+        // Hide node and label
+        node.mesh.visible = false;
+        node.hitMesh.visible = false;
+        node.line.visible = false;
+        if (node.labelEl) node.labelEl.style.opacity = '0.2';
+      }
+    });
+  }
 }
 
 if (typeof window !== 'undefined') {
