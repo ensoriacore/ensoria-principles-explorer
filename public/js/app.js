@@ -14,10 +14,11 @@
   let currentLang = detectUserLanguage();
   let uiStrings = {};
 
-  // Determine base path dynamically
-  let basePath = window.location.pathname;
-  if (!basePath.endsWith('/')) basePath += '/';
-  const apiBase = basePath + 'api';
+  // Determine base path dynamically and robustly
+  let rawPath = (window.location.pathname || '/').split('?')[0].split('#')[0];
+  rawPath = rawPath.replace(/\/index\.html$/i, '/');
+  if (!rawPath.endsWith('/')) rawPath += '/';
+  const apiBase = (window.location.origin + rawPath + 'api').replace(/([^:]\/)\/+/g, '$1');
 
   // DOM Elements
   const canvasContainer = document.getElementById('canvas-container');
@@ -28,6 +29,17 @@
   const searchResults = document.getElementById('search-results');
   const resetBtn = document.getElementById('btn-reset-view');
   const langBtns = document.querySelectorAll('.lang-btn');
+  const btnOpenDrawer = document.getElementById('btn-open-drawer');
+  const principlesDrawer = document.getElementById('principles-drawer');
+  const btnCloseDrawer = document.getElementById('btn-close-drawer');
+  const drawerSearchInput = document.getElementById('drawer-search-input');
+  const drawerList = document.getElementById('drawer-list');
+  const drawerBadge = document.getElementById('drawer-badge');
+  const drawerTitle = document.getElementById('drawer-title');
+  const drawerChakra = document.getElementById('drawer-chakra');
+  const drawerQuote = document.getElementById('drawer-quote');
+
+  let currentDrawerPrinciples = [];
 
   function detectUserLanguage() {
     // 1. Saved preference
@@ -254,6 +266,29 @@
       });
     }
 
+    // Open Principles Drawer from HUD Button or Card
+    if (btnOpenDrawer) {
+      btnOpenDrawer.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const targetId = activeCenterId || 'soul';
+        selectCenter(targetId);
+      });
+    }
+
+    // Close Principles Drawer Button
+    if (btnCloseDrawer) {
+      btnCloseDrawer.addEventListener('click', () => {
+        closePrinciplesDrawer();
+      });
+    }
+
+    // Drawer Search / Filter
+    if (drawerSearchInput) {
+      drawerSearchInput.addEventListener('input', (e) => {
+        filterDrawerPrinciples(e.target.value);
+      });
+    }
+
     // Search Input
     if (searchInput && searchResults) {
       searchInput.addEventListener('input', (e) => {
@@ -309,7 +344,7 @@
           ? "Ensō — el círculo zen de plenitud, iluminación y potencial infinito: armonía operativa dinámica, enraizada y trascendente."
           : "Ensō — the Zen circle of wholeness, enlightenment, and infinite potential: dynamic, grounded, and transcendent operational harmony.");
 
-      updateActiveCard({
+      const allInfo = {
         name: uiStrings.allCenters || 'Trinità Ontologica Vivente',
         slogan: (currentLang === 'it') ? 'Brain, Soul & Body in Equilibrio' : ((currentLang === 'es') ? 'Brain, Soul y Body en Equilibrio' : 'Brain, Soul & Body in Equilibrium'),
         chakra: 'Trinity / Ensō',
@@ -317,7 +352,10 @@
         color: '#f8fafc',
         principlesCount: principles.length,
         domain: 'all'
-      });
+      };
+
+      updateActiveCard(allInfo);
+      openPrinciplesDrawer('all', principles, allInfo);
       return;
     }
 
@@ -338,6 +376,9 @@
 
     // Update Floating HUD Card
     updateActiveCard(center);
+
+    // OPEN THE PRINCIPLES DRAWER IMMEDIATELY
+    openPrinciplesDrawer(centerId, domainPrinciples, center);
   }
 
   function collapseCenter() {
@@ -346,6 +387,137 @@
     if (avatar3D) {
       avatar3D.collapseGraph();
       avatar3D.resetView();
+    }
+    closePrinciplesDrawer();
+    updateActiveCard(null);
+  }
+
+  function openPrinciplesDrawer(centerId, domainPrinciples, centerInfo) {
+    if (!principlesDrawer) return;
+
+    currentDrawerPrinciples = domainPrinciples || [];
+
+    const center = centerInfo || centers.find(c => c.id === centerId) || {};
+    const domainColor = center.color || (centerId === 'all' ? '#f8fafc' : '#38bdf8');
+
+    if (drawerBadge) {
+      drawerBadge.textContent = (centerId || 'ALL').toUpperCase();
+      drawerBadge.style.color = domainColor;
+      drawerBadge.style.borderColor = domainColor + '55';
+      drawerBadge.style.background = domainColor + '20';
+    }
+
+    if (drawerTitle) {
+      drawerTitle.textContent = center.name || (centerId === 'all' ? (uiStrings.allCenters || 'Trinità') : centerId);
+    }
+
+    if (drawerChakra) {
+      const pCount = currentDrawerPrinciples.length;
+      drawerChakra.textContent = `${center.chakra || 'Somatic Center'} · ${pCount} ${uiStrings.principlesCount || 'Principi'}`;
+    }
+
+    if (drawerQuote) {
+      if (center.quote) {
+        drawerQuote.textContent = `"${center.quote}"`;
+        drawerQuote.style.display = 'block';
+      } else {
+        drawerQuote.style.display = 'none';
+      }
+    }
+
+    if (drawerSearchInput) {
+      drawerSearchInput.value = '';
+    }
+
+    renderDrawerPrinciples(currentDrawerPrinciples);
+    principlesDrawer.classList.add('open');
+  }
+
+  function closePrinciplesDrawer() {
+    if (principlesDrawer) {
+      principlesDrawer.classList.remove('open');
+    }
+  }
+
+  function renderDrawerPrinciples(list) {
+    if (!drawerList) return;
+
+    if (!list || list.length === 0) {
+      drawerList.innerHTML = `
+        <div style="padding: 24px; text-align: center; color: var(--ensoria-text-dim); font-size: 0.82rem;">
+          ${uiStrings.noResults || 'Nessun principio in questa sezione.'}
+        </div>
+      `;
+      return;
+    }
+
+    let html = '';
+    list.forEach(p => {
+      const type = (p.type || 'core').toLowerCase();
+      let pillClass = 'pill-core';
+      let pillLabel = uiStrings.badgeCore || 'CORE';
+      if (type === 'operative') {
+        pillClass = 'pill-operative';
+        pillLabel = uiStrings.badgeOperative || 'OPERATIVO';
+      } else if (type === 'guiding') {
+        pillClass = 'pill-guiding';
+        pillLabel = uiStrings.badgeGuiding || 'GUIDA';
+      }
+
+      const domainColor = p.domainColor || '#38bdf8';
+      const domainName = p.domainName || (p.domain ? p.domain.toUpperCase() : '');
+
+      html += `
+        <article class="drawer-card" data-id="${p.id}" tabindex="0" role="button" aria-label="${p.title}">
+          <div class="drawer-card-top">
+            <span class="drawer-card-pill ${pillClass}">${pillLabel}</span>
+            <span class="drawer-card-domain" style="color: ${domainColor};">${domainName}</span>
+          </div>
+          <div class="drawer-card-title">${p.title}</div>
+          <div class="drawer-card-axiom">${p.axiom || p.description || ''}</div>
+          <div class="drawer-card-cta">
+            <span>Dettagli & Comportamenti ➔</span>
+          </div>
+        </article>
+      `;
+    });
+
+    drawerList.innerHTML = html;
+
+    // Attach click listeners to open detailed modal
+    drawerList.querySelectorAll('.drawer-card').forEach(card => {
+      const onClick = () => {
+        const pId = card.getAttribute('data-id');
+        const principle = principles.find(p => p.id === pId);
+        if (principle && modal) {
+          modal.open(principle);
+        }
+      };
+      card.addEventListener('click', onClick);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick();
+        }
+      });
+    });
+  }
+
+  function filterDrawerPrinciples(query) {
+    const q = (query || '').trim().toLowerCase();
+    if (!q) {
+      renderDrawerPrinciples(currentDrawerPrinciples);
+      return;
+    }
+    const filtered = currentDrawerPrinciples.filter(p =>
+      (p.title && p.title.toLowerCase().includes(q)) ||
+      (p.tag && p.tag.toLowerCase().includes(q)) ||
+      (p.axiom && p.axiom.toLowerCase().includes(q)) ||
+      (p.description && p.description.toLowerCase().includes(q)) ||
+      (p.type && p.type.toLowerCase().includes(q))
+    );
+    renderDrawerPrinciples(filtered);
+  }
     }
     updateActiveCard(null);
   }

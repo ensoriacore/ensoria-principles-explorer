@@ -69,7 +69,7 @@
     <!-- Floating HUD Card (Active Center Context) -->
     <div id="active-center-card" class="active-center-card interactive">
       <div class="center-meta-tag">
-        <span>💜</span> <span data-i18n="somaticCenterTag">CENTRO SOMATICO</span>
+        <span class="meta-symbol">💜</span> <span data-i18n="somaticCenterTag">CENTRO SOMATICO</span>
       </div>
       <div class="center-name">Soul / Cardiac Center</div>
       <div class="center-slogan">Caricamento principi in corso...</div>
@@ -78,10 +78,32 @@
         <span><span data-i18n="principlesCount">Principi</span>: <b class="stat-count">-</b></span>
         <span><span data-i18n="chakra">Chakra</span>: <b class="stat-chakra">-</b></span>
       </div>
+      <button id="btn-open-drawer" class="btn-open-drawer" title="Esplora principi">
+        <span>📜</span> <span data-i18n="explorePrinciplesBtn">Esplora Principi</span> <span class="arrow">➔</span>
+      </button>
     </div>
 
     <!-- Search Results Live Dropdown -->
     <div id="search-results" class="search-results-panel interactive"></div>
+
+    <!-- Somatic Principles Drawer (Slide-in Desktop / Bottom-Sheet Mobile) -->
+    <div id="principles-drawer" class="principles-drawer interactive" aria-label="Elenco dei Principi">
+      <div class="drawer-header">
+        <div class="drawer-header-info">
+          <span class="drawer-badge" id="drawer-badge">SOUL</span>
+          <div class="drawer-title" id="drawer-title">Soul / Cardiac Center</div>
+          <div class="drawer-chakra" id="drawer-chakra">Anahata · 12 Principi</div>
+        </div>
+        <button id="btn-close-drawer" class="btn-close-drawer" aria-label="Chiudi elenco">&times;</button>
+      </div>
+      <div class="drawer-quote" id="drawer-quote"></div>
+      <div class="drawer-search">
+        <input type="text" id="drawer-search-input" placeholder="Filtra principi..." autocomplete="off">
+      </div>
+      <div class="drawer-list" id="drawer-list">
+        <!-- Principle cards dynamically injected here -->
+      </div>
+    </div>
 
     <!-- 3D Viewport Navigation Toolbar -->
     <div class="viewport-toolbar interactive" aria-label="Controlli Vista 3D">

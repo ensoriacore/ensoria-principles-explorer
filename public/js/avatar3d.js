@@ -500,6 +500,11 @@ class EnsoriaAvatar3D {
         e.stopPropagation();
         this.onSelectCenter(cfg.id);
       });
+      beaconEl.addEventListener('touchend', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        this.onSelectCenter(cfg.id);
+      });
       document.body.appendChild(beaconEl);
 
       this.somaticBeacons[cfg.id] = {
