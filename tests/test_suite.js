@@ -192,6 +192,30 @@ async function runTestSuite() {
     server.close();
 
     // -------------------------------------------------------------
+    // Test 7: Live Environment End-to-End Routing
+    // -------------------------------------------------------------
+    console.log('\n--- [Live Environment E2E Routing Verification] ---');
+    try {
+        const livePath = '/core/ensoria-principles-explorer/';
+        const makeLiveRequest = (urlPath) => new Promise((resolve, reject) => {
+            http.get(`http://127.0.0.1:3000${urlPath}`, (res) => {
+                let body = '';
+                res.on('data', chunk => body += chunk);
+                res.on('end', () => resolve({ status: res.statusCode, body }));
+            }).on('error', reject);
+        });
+
+        const appRes = await makeLiveRequest(livePath);
+        assert(appRes.status === 200, 'Live application mounts correctly at /core/ensoria-principles-explorer/');
+        assert(appRes.body.includes('timeline-container'), 'Live HTML includes timeline component');
+        
+        const liveTimelineRes = await makeLiveRequest(`${livePath}api/timeline`);
+        assert(liveTimelineRes.status === 200, 'Live API endpoint responds correctly through router mount');
+    } catch (err) {
+        assert(false, 'Live environment E2E test threw an error', err.message);
+    }
+
+    // -------------------------------------------------------------
     // Summary
     // -------------------------------------------------------------
     console.log('\n=============================================================');
