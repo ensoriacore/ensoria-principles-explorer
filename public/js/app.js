@@ -68,7 +68,7 @@
     // 4. Fetch Data & Strings
     try {
       await loadLanguage(currentLang);
-      // Clean serene baseline: zero principles visible on start
+      // Clean serene baseline: update the active card to reflect loaded counts, or pristine view
       updateActiveCard(null);
     } catch (err) {
       console.error('Failed to initialize Ensoria Principles Explorer:', err);
@@ -302,7 +302,7 @@
     });
 
     if (centerId === 'all') {
-      avatar3D.updateGraph('soul', principles);
+      avatar3D.updateGraph('all', principles);
       const allQuote = (currentLang === 'it')
         ? "Ensō — il cerchio zen di pienezza, illuminazione e potenziale infinito: armonia dinamica, radicata e trascendente."
         : ((currentLang === 'es')
