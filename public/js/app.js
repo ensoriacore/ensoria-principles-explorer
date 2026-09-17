@@ -336,8 +336,16 @@
       }
     });
 
+    // Robust principles resolution directly from principles dataset
+    const domainPrinciples = (centerId === 'all')
+      ? principles
+      : principles.filter(p => (p.domain || '').toLowerCase() === (centerId || '').toLowerCase());
+
+    // Update 3D Nodal Graph (Expand 3D Constellation Map)
+    avatar3D.updateGraph(centerId, domainPrinciples);
+
+    // Update Floating HUD Card
     if (centerId === 'all') {
-      avatar3D.updateGraph('all', principles);
       const allQuote = (currentLang === 'it')
         ? "Ensō — il cerchio zen di pienezza, illuminazione e potenziale infinito: armonia dinamica, radicata e trascendente."
         : ((currentLang === 'es')
@@ -353,28 +361,18 @@
         principlesCount: principles.length,
         domain: 'all'
       };
-
       updateActiveCard(allInfo);
-      return;
-    }
-
-    const center = centers.find(c => c.id === centerId);
-    if (!center) return;
-
-    // The API returns principles under domains
-    let domainPrinciples = [];
-    if (center.principles) {
-        domainPrinciples = center.principles;
     } else {
-        // Fallback for flat principles matching
-        domainPrinciples = principles.filter(p => p.domain === centerId);
+      const center = centers.find(c => c.id === centerId) || {
+        id: centerId,
+        name: centerId === 'brain' ? 'Brain (Centro Cranico)' : (centerId === 'soul' ? 'Soul (Centro Cardiaco)' : 'Body (Spina Dorsale)'),
+        chakra: centerId === 'brain' ? 'Sahasrara & Ajna' : (centerId === 'soul' ? 'Anahata' : 'Muladhara'),
+        color: centerId === 'brain' ? '#38bdf8' : (centerId === 'soul' ? '#c084fc' : '#34d399'),
+        principlesCount: domainPrinciples.length,
+        domain: centerId
+      };
+      updateActiveCard(center);
     }
-
-    // Update 3D Nodal Graph (Expand 3D Constellation Map)
-    avatar3D.updateGraph(centerId, domainPrinciples);
-
-    // Update Floating HUD Card
-    updateActiveCard(center);
   }
 
   function collapseCenter() {

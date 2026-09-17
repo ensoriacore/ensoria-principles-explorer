@@ -710,17 +710,18 @@ class EnsoriaAvatar3D {
    * ======================================================================= */
   focusOnCenter(centerId) {
     const center = this.somaticCenters[centerId];
-    if (!center) {
-      this.resetView();
-      return;
+    const isMobile = window.innerWidth < 768;
+    const dist = isMobile ? 7.6 : 6.6;
+
+    if (!center || centerId === 'all') {
+      this.cameraTargetPos.set(0, 0.35, dist);
+      this.controlsTargetPos.set(0, 0.35, 0);
+    } else {
+      // Subtle framing: keep the whole constellation comfortably in viewport
+      const targetY = 0.35 * 0.4 + center.basePos.y * 0.6;
+      this.cameraTargetPos.set(0, targetY, dist);
+      this.controlsTargetPos.set(0, targetY, 0);
     }
-
-    const pos = center.basePos;
-    let dist = 5.2;
-    if (window.innerWidth < 768) dist = 6.2;
-
-    this.cameraTargetPos.set(0, pos.y, dist);
-    this.controlsTargetPos.set(0, pos.y, 0);
     this.isCameraTransitioning = true;
   }
 
