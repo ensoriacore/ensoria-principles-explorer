@@ -40,6 +40,22 @@ apiRouter.get('/principles', (req, res) => {
     }
 });
 
+// API: Get Single Principle by Slug
+apiRouter.get('/principles/:id', (req, res) => {
+    try {
+        const parser = require('./lib/parser');
+        const data = parser.getAllPrinciples();
+        const principle = data.principles.find(p => p.slug === req.params.id);
+        if (principle) {
+            res.json({ success: true, principle });
+        } else {
+            res.status(404).json({ success: false, error: 'Principle not found' });
+        }
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
 app.use('/api', apiRouter);
 
 if (require.main === module) {
