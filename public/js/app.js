@@ -116,6 +116,17 @@
 
     if (principlesRes.success) {
       principles = principlesRes.principles;
+      
+      // We need to attach the specific principles list to each center
+      // because the new API structure returns all principles together.
+      if (centers.length > 0 && principlesRes.domains) {
+          centers.forEach(c => {
+              if (principlesRes.domains[c.id] && principlesRes.domains[c.id].principles) {
+                  c.principles = principlesRes.domains[c.id].principles;
+              }
+          });
+      }
+
       const allBtn = document.querySelector(`.center-btn[data-center="all"] .badge-count`);
       if (allBtn) allBtn.textContent = principles.length;
     }
