@@ -36,14 +36,14 @@
             this.container.innerHTML = `
                 <div class="timeline-slider-card">
                     <div class="timeline-header">
-                        <span class="timeline-label">⏳ TIMELINE & GROWTH ENGINE</span>
-                        <span id="active-epoch-tag" class="epoch-tag">TUTTE LE EPOCHE</span>
+                        <span class="timeline-label">⏳ CHRONOLOGICAL LEDGER</span>
+                        <span id="active-epoch-tag" class="epoch-tag">TUTTO IL TEMPO</span>
                     </div>
                     <div class="timeline-track">
                         <button class="epoch-btn active" data-epoch="all" title="Visualizza tutti i principi ontologici">
                             <span class="epoch-dot"></span>
-                            <span class="epoch-title">Tutte</span>
-                            <span class="epoch-year">Origine → Mitosi</span>
+                            <span class="epoch-title">Tutti gli Anni</span>
+                            <span class="epoch-year"></span>
                         </button>
                         ${this.epochs.map(epoch => `
                             <button class="epoch-btn" data-epoch="${epoch.id}" title="${epoch.description}">
@@ -72,7 +72,7 @@
 
                     let selectedEpoch = null;
                     if (epochId === 'all') {
-                        if (tag) tag.textContent = 'TUTTE LE EPOCHE';
+                        if (tag) tag.textContent = 'TUTTO IL TEMPO';
                     } else {
                         selectedEpoch = this.epochs.find(e => e.id === epochId);
                         if (tag && selectedEpoch) {
