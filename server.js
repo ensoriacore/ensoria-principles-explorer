@@ -17,48 +17,6 @@ apiRouter.get('/status', (req, res) => {
     });
 });
 
-// Dynamic Timeline Generation based on principle creation dates
-apiRouter.get('/timeline', (req, res) => {
-    try {
-        const parser = require('./lib/parser');
-        const data = parser.getAllPrinciples();
-        
-        // Extract unique years from created_at dates
-        const years = new Set();
-        data.principles.forEach(p => {
-            if (p.created_at) {
-                years.add(p.created_at.split('-')[0]);
-            }
-        });
-        
-        const sortedYears = Array.from(years).sort();
-        
-        // Group principles by year
-        const epochs = sortedYears.map((year, index) => {
-            const principlesForYear = data.principles
-                .filter(p => p.created_at && p.created_at.startsWith(year))
-                .sort((a, b) => a.created_at.localeCompare(b.created_at))
-                .map(p => p.id);
-                
-            return {
-                id: `epoch_${year}`,
-                name: `Ensoria Core ${year}`,
-                period: year,
-                description: `Ontological principles codified during the ${year} operating period.`,
-                principles: principlesForYear
-            };
-        });
-
-        res.json({
-            success: true,
-            totalEpochs: epochs.length,
-            epochs: epochs
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
-});
-
 // API: Get Somatic Centers
 apiRouter.get('/centers', (req, res) => {
     res.json({

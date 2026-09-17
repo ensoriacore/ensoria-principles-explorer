@@ -191,19 +191,6 @@
   }
 
   function setupUIEvents() {
-    // Listen for Timeline Epoch Change
-    window.addEventListener('ensoria:epochChanged', (e) => {
-      const { epochId, epoch, principles: epochPrinciples } = e.detail;
-      const hintText = document.getElementById('interaction-text');
-      if (epochId === 'all') {
-        if (hintText) hintText.textContent = `Tutte le epoche ontologiche attive (${principles.length} principi)`;
-        if (avatar3D) avatar3D.filterByEpoch('all');
-      } else if (epoch && epochPrinciples) {
-        if (hintText) hintText.textContent = `⏳ ${epoch.name} (${epoch.period}): ${epochPrinciples.length} principi chiave`;
-        if (avatar3D) avatar3D.filterByEpoch(epochPrinciples);
-      }
-    });
-
     // Center Buttons
     centerBtns.forEach(btn => {
       btn.addEventListener('click', () => {
